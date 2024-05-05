@@ -4,5 +4,21 @@
   "main": "index.js",
   "repository": "https://github.com/raulrocha2/rinha-de-backend2024-ts.git",
   "author": "raulrocha2 <raul.rocha2@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/module-alias": "^2.0.4",
+    "@types/node": "^20.12.8",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "build": "rimraf dist && npx tsc",
+    "start": "node dist/main/api"
+  },
+  "engines": {
+    "node": "22.0.0"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.3",
+    "rimraf": "^5.0.5"
+  }
 }
