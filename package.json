@@ -1,0 +1,8 @@
+{
+  "name": "rinhabackend-typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/raulrocha2/rinha-de-backend2024-ts.git",
+  "author": "raulrocha2 <raul.rocha2@gmail.com>",
+  "license": "MIT"
+}
