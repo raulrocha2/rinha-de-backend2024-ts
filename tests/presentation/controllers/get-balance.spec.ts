@@ -96,4 +96,22 @@ describe("Get Balance Controller", () => {
     await sut.handle(httpRequest);
     expect(getBalanceSpy).toHaveBeenCalledWith(id);
   });
+
+  test("should return 404 GetClientbalance throws", async () => {
+    const { sut, getClientBalanceStub } = makeSut();
+    jest
+      .spyOn(getClientBalanceStub, "getById")
+      .mockImplementationOnce(async () => {
+        return await new Promise((_resolve, reject) => reject(new Error()));
+      });
+
+    const httpRequest = {
+      params: {
+        id: 1,
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(404);
+    expect(httpResponse.body).toEqual(new Error("Server Error"));
+  });
 });
