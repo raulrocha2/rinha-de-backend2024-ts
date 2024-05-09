@@ -73,7 +73,12 @@ describe("Get Balance Controller", () => {
   });
 
   test("should return 404 if client id not found", async () => {
-    const { sut } = makeSut();
+    const { sut, getClientBalanceStub } = makeSut();
+    jest
+      .spyOn(getClientBalanceStub, "getById")
+      .mockImplementationOnce(async () => {
+        return await new Promise((_resolve) => _resolve(null));
+      });
     const httpRequest = {
       params: {
         id: 0,
@@ -113,5 +118,37 @@ describe("Get Balance Controller", () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(404);
     expect(httpResponse.body).toEqual(new Error("Server Error"));
+  });
+
+  test("should return 200 id is valid", async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      params: {
+        id: 1,
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({
+      saldo: {
+        total: -9098,
+        data_extrato: "2024-01-17T02:34:41.217753Z",
+        limite: 100000,
+      },
+      ultimas_transacoes: [
+        {
+          valor: 10,
+          tipo: "c",
+          descricao: "descricao",
+          realizada_em: "2024-01-17T02:34:38.543030Z",
+        },
+        {
+          valor: 90000,
+          tipo: "d",
+          descricao: "descricao",
+          realizada_em: "2024-01-17T02:34:38.543030Z",
+        },
+      ],
+    });
   });
 });
