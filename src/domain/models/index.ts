@@ -1,1 +1,1 @@
-export * from "./balance-account";
+export * from "./client-balance";

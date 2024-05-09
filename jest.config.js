@@ -1,10 +1,4 @@
-/**
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/configuration
- */
-
-/** @type {import('jest').Config} */
-const config = {
+module.exports = {
   // collectCoverage: true,
   collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
   coverageDirectory: "coverage",
@@ -13,10 +7,9 @@ const config = {
     "@/tests/(.+)": "<rootDir>/tests/$1",
     "@/(.+)": "<rootDir>/src/$1",
   },
-  roots: ["<rootDir>/tests", "<rootDir>/src"],
+  testMatch: ["**/*.spec.ts"],
+  roots: ["<rootDir>/src", "<rootDir>/tests"],
   transform: {
     "\\.ts$": "ts-jest",
   },
 };
-
-module.exports = config;
