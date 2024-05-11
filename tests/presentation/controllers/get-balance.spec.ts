@@ -1,36 +1,15 @@
 import { GetBalanceController } from "@/presentation/controllers/get-balance";
-import { IGetClientBalance } from "@/domain/usecases/get-client-balance";
+import { IGetClientBalanceById } from "@/domain/usecases/get-client-balance";
 import { IClientBalanceModel } from "@/domain/models";
+import { mockClientBalance } from "@/tests/mocks";
 
 type SutTypes = {
   sut: GetBalanceController;
   getClientBalanceStub: any;
 };
 
-const mockClientBalance = (): IClientBalanceModel => ({
-  saldo: {
-    total: -9098,
-    data_extrato: "2024-01-17T02:34:41.217753Z",
-    limite: 100000,
-  },
-  ultimas_transacoes: [
-    {
-      valor: 10,
-      tipo: "c",
-      descricao: "descricao",
-      realizada_em: "2024-01-17T02:34:38.543030Z",
-    },
-    {
-      valor: 90000,
-      tipo: "d",
-      descricao: "descricao",
-      realizada_em: "2024-01-17T02:34:38.543030Z",
-    },
-  ],
-});
-
-const makeGetClient = (): IGetClientBalance => {
-  class GetClientBalanceStub implements IGetClientBalance {
+const makeGetClient = (): IGetClientBalanceById => {
+  class GetClientBalanceStub implements IGetClientBalanceById {
     async getById(id: string): Promise<IClientBalanceModel> {
       return await new Promise((resolve) => resolve(mockClientBalance()));
     }
@@ -117,7 +96,7 @@ describe("Get Balance Controller", () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(404);
-    expect(httpResponse.body).toEqual(new Error("Server Error"));
+    expect(httpResponse.body).toEqual(new Error("Internal server error"));
   });
 
   test("should return 200 id is valid", async () => {

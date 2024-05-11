@@ -1,10 +1,10 @@
-import { IGetClientBalance } from "@/domain/usecases/get-client-balance";
-import { InvalidParamError } from "../erros";
+import { IGetClientBalanceById } from "@/domain/usecases/get-client-balance";
+import { InvalidParamError, ServerError } from "../erros";
 import { badRequest, ok } from "../hepers";
 import { IController, IHttpRequest, IHttpResponse } from "../protocols";
 
 export class GetBalanceController implements IController {
-  constructor(private readonly clientBalance: IGetClientBalance) {}
+  constructor(private readonly clientBalance: IGetClientBalanceById) {}
   async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
     try {
       const { id } = httpRequest.params;
@@ -16,8 +16,8 @@ export class GetBalanceController implements IController {
         return badRequest(new Error("client not found"));
       }
       return badRequest(new InvalidParamError());
-    } catch (error) {
-      return badRequest(new Error("Server Error"));
+    } catch (error: any) {
+      return badRequest(new ServerError(error.stack));
     }
   }
 }
